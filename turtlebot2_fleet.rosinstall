@@ -1,0 +1,83 @@
+##############################################################################
+#
+# Source installation instructions at:
+#
+# http://www.ros.org/wiki/turtlebot/Tutorials/hydro/Source%20Installation
+#
+##############################################################################
+
+# Make sure to install these ROCON packages as well:
+# https://raw.github.com/robotics-in-concert/rocon/melodic/rocon_app_platform.rosinstall
+
+# Kobuki / Yujin stacks
+
+- git:
+    uri: https://github.com/yujinrobot/kobuki_desktop.git
+    local-name: kobuki_desktop
+    version: melodic
+
+- git:
+    uri: https://github.com/yujinrobot/yocs_msgs.git
+    local-name: yocs_msgs
+    version: melodic
+
+- git:
+    uri: https://github.com/yujinrobot/yujin_ocs.git
+    local-name: yujin_ocs
+    version: melodic
+
+- git:
+    uri: https://github.com/yujinrobot/kobuki_msgs.git
+    local-name: kobuki_msgs
+    version: melodic
+
+- git:
+    uri: https://github.com/yujinrobot/kobuki_core.git
+    local-name: kobuki_core
+    version: melodic
+
+- git:
+    uri: https://github.com/yujinrobot/kobuki.git
+    local-name: kobuki
+    version: melodic
+
+# Create stacks
+
+# Turtlebot stacks
+
+- git:
+    uri: https://github.com/turtlebot/turtlebot_msgs.git
+    local-name: turtlebot_msgs
+    version: melodic
+
+- git:
+    uri: https://github.com/turtlebot/turtlebot.git
+    local-name: turtlebot
+    version: melodic
+
+- git:
+    uri: https://github.com/turtlebot/turtlebot_simulator.git
+    local-name: turtlebot_simulator
+    version: melodic
+
+- git:
+    uri: https://github.com/turtlebot/turtlebot_apps.git
+    local-name: turtlebot_apps
+    version: melodic
+
+- git:
+    uri: https://github.com/turtlebot/turtlebot_interactions.git
+    local-name: turtlebot_interactions
+    version: melodic
+
+# Other
+
+- git:
+    uri: https://github.com/eclipse-cyclonedds/cyclonedds.git
+    local-name: cyclonedds
+    version: releases/0.7.x
+
+- git:
+    uri: https://github.com/open-rmf/free_fleet.git
+    local-name: free_fleet
+    version: ros1
