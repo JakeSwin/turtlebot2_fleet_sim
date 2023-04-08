@@ -1,0 +1,7 @@
+move_base:
+  - 
+    global_costmap:
+      - 
+        inflation_layer:
+          - 
+            inflation_radius: 0.35

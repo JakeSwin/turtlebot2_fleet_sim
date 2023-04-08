@@ -1,0 +1,58 @@
+<launch>
+  <arg name="robot_name"/>
+  <arg name="initial_pose_x" default="0.0"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+  <param name="/move_base/global_costmap/inflation_layer/inflation_radius" type="double" value="0.35"/>
+  <param name="/move_base/local_costmap/inflation_layer/inflation_radius" type="double" value="0.35"/>
+
+  <!-- Velocity muxer -->
+  <!-- <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="cmd_vel_mux"
+        args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+    <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
+    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+  </node> -->
+
+  <!-- Bumper/cliff to pointcloud (not working, as it needs sensors/core messages) -->
+  <!-- <include file="$(find turtlebot_bringup)/launch/includes/kobuki/bumper2pc.launch.xml"/> -->
+  <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node> -->
+
+  <include file="$(find turtlebot_bringup)/launch/minimal.launch"/>
+  <include file="$(find turtlebot_bringup)/launch/3dsensor.launch"/>
+
+  <!-- Fake laser -->
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depth_to_scan">
+    <param name="scan_height" value="10"/>
+    <param name="output_frame_id" value="camera_depth_frame"/>
+    <param name="range_min" value="0.45"/>
+    <remap from="image" to="camera/depth_registered/image_raw"/>
+  </node>
+
+  <!-- AMCL -->
+  <include file="$(find turtlebot_navigation)/launch/includes/amcl/kinect_amcl.launch.xml">
+    <arg name="use_map_topic" value="true" />
+    <arg name="initial_pose_x" value="1.836"/>
+    <arg name="initial_pose_y" value="12.682"/>
+    <arg name="initial_pose_a" value="0.0"/>
+    <arg name="scan_topic" value="scan"/>
+    <!-- <arg name="odom_frame_id" value="$(arg robot_name)_tf/odom"/> -->
+    <!-- <arg name="base_frame_id" value="$(arg robot_name)_tf/base_footprint"/> -->
+    <arg name="odom_frame_id" value="odom"/>
+    <arg name="base_frame_id" value="base_footprint"/>
+  </include>
+
+  <!-- MOVE BASE -->
+ <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml">
+    <!-- <arg name="laser_topic" value="/$(arg robot_name)/scan"/> -->
+    <!-- <arg name="odom_topic" value="/$(arg robot_name)/odom"/> -->
+    <arg name="laser_topic" value="scan"/>
+    <arg name="odom_topic" value="odom"/>
+    <!-- <arg name="odom_frame_id" value="$(arg robot_name)_tf/odom"/> -->
+    <!-- <arg name="base_frame_id" value="$(arg robot_name)_tf/base_footprint"/> -->
+    <arg name="odom_frame_id" value="odom"/>
+    <arg name="base_frame_id" value="base_footprint"/>
+ </include>
+</launch>

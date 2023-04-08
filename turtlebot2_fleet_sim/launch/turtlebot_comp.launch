@@ -1,0 +1,16 @@
+<launch>
+  <arg name="urdf_file" default="$(find xacro)/xacro '$(find turtlebot_description)/robots/kobuki_hexagons_kinect.urdf.xacro'"/>
+  <param name="robot_description" command="$(arg urdf_file)"/>
+  <param name="use_tf_static" value="false"/>
+  <!-- <param name="/move_base/global_costmap/inflation_layer/inflation_radius" type="double" value="0.35"/>
+  <param name="/move_base/local_costmap/inflation_layer/inflation_radius" type="double" value="0.35"/>
+  <rosparam file="../params.yaml" command="load"/> -->
+
+  <!-- MAP SERVER -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find turtlebot_fleet)/maps/inb3235_map.yaml" />
+
+  <!-- FAKE BATTERY -->
+  <node name="fake_battery_node" pkg="turtlebot_fleet" type="fakeBattery.py"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot_fleet)/rviz/fleet_real.rviz" output="screen"/>
+</launch>

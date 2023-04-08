@@ -1,0 +1,24 @@
+<launch>
+  <arg name="urdf_file" default="$(find xacro)/xacro '$(find turtlebot_description)/robots/kobuki_hexagons_kinect.urdf.xacro'"/>
+  <param name="robot_description" command="$(arg urdf_file)"/>
+  <param name="use_tf_static" value="false"/>
+
+  <!-- MAP SERVER -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find turtlebot_fleet)/maps/inb3235_map.yaml" />
+
+  <!-- FAKE BATTERY -->
+  <node name="fake_battery_node" pkg="turtlebot_fleet" type="fakeBattery.py"/>
+
+  <!-- <include file="$(find turtlebot_fleet)/launch/one_robot.launch">
+    <arg name="initial_pose_x" value="0.6" />
+    <arg name="initial_pose_y" value="5.34" />
+    <arg name="initial_pose_a" value="0" />
+    <arg name="robot_name" value="robot1" />
+  </include> -->
+  <include file="$(find turtlebot_fleet)/launch/one_robot_real.launch">
+    <arg name="initial_pose_x" value="1.836" />
+    <arg name="initial_pose_y" value="12.682" />
+    <arg name="initial_pose_a" value="0.0" />
+    <arg name="robot_name" value="robot1" />
+  </include>
+</launch>
