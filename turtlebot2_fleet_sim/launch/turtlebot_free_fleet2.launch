@@ -1,0 +1,27 @@
+<launch>
+  <!-- FREE FLEET ROBOT 1 -->
+  <node pkg="free_fleet_client_ros1" type="free_fleet_client_ros1" output="screen"
+        name="free_fleet_client_robot1">
+    <param name="fleet_name" type="string" value="turtlebot2"/>
+    <param name="robot_name" type="string" value="robot1"/>
+    <param name="level_name" type="string" value="L1"/>
+    <param name="dds_domain" type="int" value="42"/>
+    <param name="max_dist_to_first_waypoint" type="double" value="10.0"/>
+    <param name="battery_state_topic" value="/fake_battery_state"/>
+    <param name="robot_frame" value="robot1_tf/base_footprint"/>
+    <param name="move_base_server_name" value="robot1/move_base"/>
+  </node>
+
+  <!-- FREE FLEET ROBOT 2 -->
+  <node pkg="free_fleet_client_ros1" type="free_fleet_client_ros1" output="screen"
+        name="free_fleet_client_robot2">
+    <param name="fleet_name" type="string" value="turtlebot2"/>
+    <param name="robot_name" type="string" value="robot2"/>
+    <param name="level_name" type="string" value="L1"/>
+    <param name="dds_domain" type="int" value="42"/>
+    <param name="max_dist_to_first_waypoint" type="double" value="10.0"/>
+    <param name="battery_state_topic" value="/fake_battery_state"/>
+    <param name="robot_frame" value="robot2_tf/base_footprint"/>
+    <param name="move_base_server_name" value="robot2/move_base"/>
+  </node>
+</launch>

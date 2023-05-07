@@ -1,0 +1,56 @@
+<launch>
+  <arg name="robot_name"/>
+  <arg name="initial_pose_x" default="0.0"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
+  <group ns="$(arg robot_name)">
+    <param name="tf_prefix" value="/$(arg robot_name)_tf"/>
+
+    <include file="./minimal.launch">
+      <arg name="robot_name" value="$(arg robot_name)"/>
+    </include>
+    <include file="./3dsensor.launch">
+      <arg name="robot_name" value="$(arg robot_name)"/>
+      <arg name="depth_registration"              value="true"/>
+      <arg name="rgb_processing"                  value="true"/>
+      <arg name="ir_processing"                   value="false"/>
+      <arg name="depth_processing"                value="true"/>
+      <arg name="depth_registered_processing"     value="true"/>
+      <arg name="disparity_processing"            value="true"/>
+      <arg name="disparity_registered_processing" value="true"/>
+      <arg name="scan_processing"                 value="true"/>
+    </include>
+
+    <!-- Fake laser -->
+    <!-- <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depth_to_scan">
+      <param name="scan_height" value="10"/>
+      <param name="output_frame_id" value="/$(arg robot_name)_tf/camera_depth_frame"/>
+      <param name="range_min" value="0.45"/>
+      <remap from="image" to="camera/depth_registered/image_raw"/>
+    </node> -->
+
+    <!-- AMCL -->
+    <include file="./kinect_amcl.launch.xml">
+      <arg name="use_map_topic" value="true" />
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+      <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+      <arg name="scan_topic" value="scan"/>
+      <arg name="map_topic" value="/map"/>
+      <arg name="odom_frame_id" value="/$(arg robot_name)_tf/odom"/>
+      <arg name="base_frame_id" value="/$(arg robot_name)_tf/base_footprint"/>
+      <arg name="global_frame_id" value="/map"/>
+    </include>
+
+    <!-- MOVE BASE -->
+    <include file="./move_base.launch.xml">
+      <arg name="laser_topic" value="/$(arg robot_name)/scan"/>
+      <arg name="odom_topic" value="/$(arg robot_name)/odom"/>
+      <arg name="global_frame_id" value="/map"/>
+      <arg name="map_topic" value="/map"/>
+      <arg name="odom_frame_id" value="/$(arg robot_name)_tf/odom"/>
+      <arg name="base_frame_id" value="/$(arg robot_name)_tf/base_footprint"/>
+    </include>
+  </group>
+</launch>
